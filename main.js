@@ -1,85 +1,86 @@
-const fotografias = [
-  {
-    nombre: "Atardecer",
-    precio: 3500,
-    imagen: "assets/atardecerMontaña.jpg"
-  },
-  {
-    nombre: "Ciudad de noche",
-    precio: 4000,
-    imagen: "assets/ciudadNoche.jpg"
-  },
-  {
-    nombre: "Bosque nevado",
-    precio: 3000,
-    imagen: "assets/bosqueNevado.jpg"
+document.addEventListener("DOMContentLoaded", () => {
+  const fotografias = [
+    { nombre: "Atardecer", precio: 3500, imagen: "assets/atardecer.jpg" },
+    { nombre: "Montaña", precio: 4000, imagen: "assets/montaña.jpg" },
+    { nombre: "Margaritas", precio: 3000, imagen: "assets/margaritas.jpg" }
+  ];
+
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  let total = carrito.reduce((acc, foto) => acc + foto.precio, 0);
+
+  const slideImg = document.getElementById("slide-img");
+  const slideTitle = document.getElementById("slide-title");
+  const addBtn = document.getElementById("add-to-cart");
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const carritoPanel = document.getElementById("carrito");
+  const listaCarrito = document.getElementById("lista-carrito");
+  const totalTexto = document.getElementById("total");
+  const cartMessage = document.getElementById("cart-message");
+  const mensajeFlotante = document.getElementById("mensaje-flotante");
+
+  let indice = 0;
+  let interval = null;
+
+  function mostrarSlide() {
+    const foto = fotografias[indice];
+    slideImg.src = foto.imagen;
+    slideImg.alt = foto.nombre;
+    slideTitle.textContent = `${foto.nombre} - $${foto.precio}`;
   }
-];
 
-let carrito = [];
-let total = 0;
+  function siguienteSlide() { indice = (indice + 1) % fotografias.length; mostrarSlide(); }
+  function anteriorSlide() { indice = (indice - 1 + fotografias.length) % fotografias.length; mostrarSlide(); }
+  function iniciarCarrusel() { interval = setInterval(siguienteSlide, 5000); }
+  function detenerCarrusel() { clearInterval(interval); }
 
-const galeria = document.getElementById("galeria");
-const listaCarrito = document.getElementById("lista-carrito");
-const totalTexto = document.getElementById("total");
-
-for (let i = 0; i < fotografias.length; i++) {
-  const foto = fotografias[i];
-  const div = document.createElement("div");
-  div.classList.add("foto");
-  div.innerHTML = `
-    <img src="${foto.imagen}" alt="${foto.nombre}" class="foto-img">
-    <h3>${foto.nombre}</h3>
-    <p>Precio: $${foto.precio}</p>
-    <button onclick="agregarAlCarrito(${i})">Agregar al carrito</button>
-  `;
-  galeria.appendChild(div);
-}
-
-
-let nombreCliente = prompt("¡Bienvenido a la Tienda de Fotografías! ¿Cuál es tu nombre?");
-if (!nombreCliente) {
-  nombreCliente = "Cliente invitado";
-}
-alert(`Hola, ${nombreCliente}. ¡Disfrutá tu visita!`);
-
-
-function agregarAlCarrito(indice) {
-  const foto = fotografias[indice];
-  carrito.push(foto);
-  total += foto.precio;
-  actualizarCarrito();
-}
-
-function actualizarCarrito() {
-  listaCarrito.innerHTML = "";
-  for (let i = 0; i < carrito.length; i++) {
-    const foto = carrito[i];
-    const li = document.createElement("li");
-    li.textContent = `${foto.nombre} - $${foto.precio}`;
-    listaCarrito.appendChild(li);
- } 
-  totalTexto.textContent = `Total: $${total}`;
-}
-
-document.getElementById("finalizar").addEventListener("click", () => {
-  if (carrito.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
+  function actualizarCarrito() {
+    listaCarrito.innerHTML = "";
+    carrito.forEach(foto => {
+      const li = document.createElement("li");
+      li.textContent = `${foto.nombre} - $${foto.precio}`;
+      listaCarrito.appendChild(li);
+    });
+    totalTexto.textContent = `Total: $${total}`;
+    localStorage.setItem("carrito", JSON.stringify(carrito));
   }
-  alert(`Gracias por tu compra, ${nombreCliente}. Total a pagar: $${total}`);
-  console.log("Compra:", carrito);
-  carrito = [];
-  total = 0;
-  actualizarCarrito();
-});
 
-document.getElementById("reiniciar").addEventListener("click", () => {
-  if (confirm("¿Estás seguro de vaciar el carrito?")) {
-    carrito = [];
-    total = 0;
+
+  addBtn.addEventListener("click", () => {
+    const foto = fotografias[indice];
+    carrito.push(foto);
+    total += foto.precio;
     actualizarCarrito();
-  }
-});
+    carritoPanel.classList.add("show");
 
-mostrarGaleria();
+   
+    cartMessage.classList.remove("hidden");
+    setTimeout(() => cartMessage.classList.add("hidden"), 1500);
+  });
+
+
+  nextBtn.addEventListener("click", () => { detenerCarrusel(); siguienteSlide(); iniciarCarrusel(); });
+  prevBtn.addEventListener("click", () => { detenerCarrusel(); anteriorSlide(); iniciarCarrusel(); });
+
+
+  document.getElementById("cerrar-carrito").addEventListener("click", () => carritoPanel.classList.remove("show"));
+  document.getElementById("reiniciar").addEventListener("click", () => { carrito = []; total = 0; actualizarCarrito(); });
+
+
+  document.getElementById("finalizar").addEventListener("click", () => {
+      if (carrito.length === 0) return;
+        carrito = [];
+        total = 0;
+        actualizarCarrito();
+
+        mensajeFlotante.classList.add("show");
+
+        setTimeout(() => mensajeFlotante.classList.remove("show"), 3000);
+
+        carritoPanel.classList.remove("show");
+    });
+
+  mostrarSlide();
+  actualizarCarrito();
+  iniciarCarrusel();
+});
