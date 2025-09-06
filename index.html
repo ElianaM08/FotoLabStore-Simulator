@@ -10,21 +10,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Mate+SC&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nanum+Gothic&family=Raleway:ital,wght@1,262&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>FotoLab Store 📷</h1>
-        <h3 class="subtitulo">Tienda de las mejores imagenes</h3>
-    </header>
-    <main>
-        <section id="galeria"></section>
-        <aside id="carrito">
-            <h2>🛒 Carrito</h2>
-            <ul id="lista-carrito"></ul>
-            <p id="total">Total: $0</p>
-            <button id="finalizar">Finalizar compra</button>
-            <button id="reiniciar">Vaciar carrito</button>
-        </aside>
-    </main>
+    <div id="mensaje-flotante">¡Compra realizada con éxito! ✅</div>
+    <section id="carrusel">
+        <img id="slide-img" src="" alt="Foto">
+        <img id="logo" src="/assets/fotolab-logo.png" alt="logo">
+        <div class="info">
+            <h3 id="slide-title"></h3>
+            <button id="add-to-cart">Agregar al carrito</button>
+            <p id="cart-message" class="hidden">¡Producto agregado al carrito!</p>
+        </div>
+        <div class="controls">
+            <button id="prev">&#10094;</button>
+            <button id="next">&#10095;</button>
+        </div>
+    </section>
 
-  <script src="main.js"></script>
+    <aside id="carrito">
+        <h2>🛒 Carrito</h2>
+        <ul id="lista-carrito"></ul>
+        <p id="total">Total: $0</p>
+        <button id="finalizar">Finalizar compra</button>
+        <button id="reiniciar">Vaciar carrito</button>
+        <button id="cerrar-carrito">Cerrar</button>
+    </aside>
+
+    <script src="main.js"></script>
 </body>
 </html>
