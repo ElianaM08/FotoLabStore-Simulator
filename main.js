@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const carritoPanel = document.getElementById("carrito");
   const listaCarrito = document.getElementById("lista-carrito");
   const totalTexto = document.getElementById("total");
-  const cartMessage = document.getElementById("cart-message");
-  const mensajeFlotante = document.getElementById("mensaje-flotante");
 
   let indice = 0;
   let interval = null;
