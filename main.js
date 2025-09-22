@@ -53,9 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarCarrito();
     carritoPanel.classList.add("show");
 
-   
-    cartMessage.classList.remove("hidden");
-    setTimeout(() => cartMessage.classList.add("hidden"), 1500);
+    Toastify({
+      text: "✅ Producto agregado al carrito",
+      duration: 2000,
+      gravity: "top", 
+      position: "center", 
+      backgroundColor: "#007bff",
+      stopOnFocus: true,
+    }).showToast();
+
   });
 
 
@@ -73,12 +79,15 @@ document.addEventListener("DOMContentLoaded", () => {
         total = 0;
         actualizarCarrito();
 
-        mensajeFlotante.classList.add("show");
+    Toastify({
+      text: "🎉 Compra realizada con éxito",
+      duration: 3000,
+      gravity: "top",
+      position: "center",
+      backgroundColor: "#28a745",
+    }).showToast();
 
-        setTimeout(() => mensajeFlotante.classList.remove("show"), 3000);
-
-        carritoPanel.classList.remove("show");
-    });
+  });
 
   mostrarSlide();
   actualizarCarrito();
