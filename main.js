@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // === ELEMENTOS DEL DOM ===
+  
   const bienvenida = document.getElementById("bienvenida");
   const ingresarBtn = document.getElementById("ingresar");
 
@@ -22,12 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   let total = carrito.reduce((acc, foto) => acc + foto.precio, 0);
 
-  // === FUNCIONES ===
-
-  // Cargar productos desde JSON
   async function cargarProductos() {
     try {
-      const response = await fetch("products.json"); // tu archivo JSON
+      const response = await fetch("products.json"); 
       const data = await response.json();
       fotografias = data;
       mostrarSlide();
@@ -36,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Mostrar slide actual
+ 
   function mostrarSlide() {
     if(fotografias.length === 0) return;
     const foto = fotografias[indice];
@@ -45,14 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
     slideTitle.textContent = `${foto.nombre} - $${foto.precio}`;
   }
 
-  // Avanzar y retroceder
   function siguienteSlide() { indice = (indice + 1) % fotografias.length; mostrarSlide(); }
   function anteriorSlide() { indice = (indice - 1 + fotografias.length) % fotografias.length; mostrarSlide(); }
 
   function iniciarCarrusel() { interval = setInterval(siguienteSlide, 5000); }
   function detenerCarrusel() { clearInterval(interval); }
 
-  // Carrito
   function actualizarCarrito() {
     listaCarrito.innerHTML = "";
     carrito.forEach(foto => {
@@ -64,9 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("carrito", JSON.stringify(carrito));
   }
 
-  // === EVENTOS ===
-
-  // Botón ingresar
   ingresarBtn.addEventListener("click", async () => {
     bienvenida.classList.add("hidden");
     carrusel.classList.remove("hidden");
@@ -75,11 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     iniciarCarrusel();
   });
 
-  // Botones del carrusel
   nextBtn.addEventListener("click", () => { detenerCarrusel(); siguienteSlide(); iniciarCarrusel(); });
   prevBtn.addEventListener("click", () => { detenerCarrusel(); anteriorSlide(); iniciarCarrusel(); });
 
-  // Agregar al carrito
   addBtn.addEventListener("click", () => {
     const foto = fotografias[indice];
     carrito.push(foto);
@@ -97,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }).showToast();
   });
 
-  // Botones del carrito
   document.getElementById("cerrar-carrito").addEventListener("click", () => carritoPanel.classList.remove("show"));
   document.getElementById("reiniciar").addEventListener("click", () => { carrito = []; total = 0; actualizarCarrito(); });
   document.getElementById("finalizar").addEventListener("click", () => {
@@ -117,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     carritoPanel.classList.remove("show");
   });
 
-  // Inicializar carrito al cargar la página
   actualizarCarrito();
 
 });
