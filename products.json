@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "nombre": "Atardecer",
+    "precio": 100,
+    "imagen": "./assets/atardecer.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Montaña",
+    "precio": 300,
+    "imagen": "./assets/montaña.jpg"
+  },
+    {
+    "id": 3,
+    "nombre": "Margaritas",
+    "precio": 200,
+    "imagen": "./assets/margaritas.jpg"
+  }
+
+]
