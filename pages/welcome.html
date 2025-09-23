@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FotoLab Store - Bienvenida</title>
+  <link rel="stylesheet" href="/styles/welcomeStyle.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mate+SC&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nanum+Gothic&family=Raleway:ital,wght@1,262&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="bienvenida">
+    <h1>FotoLab Store</h1>
+    <div class="imagenes">
+      <img src="/assets/imgPrincipal1.jpg" alt="Fondo 1">
+      <img src="/assets/imgPrincipal2.jpg" alt="Fondo 2">
+      <img src="/assets/imgPrincipal3.jpg" alt="Fondo 3">
+    </div>
+    <button id="ingresar">Ingresar</button>
+  </div>
+
+  <script>
+    document.getElementById("ingresar").addEventListener("click", () => {
+      window.location.href = "carrusel.html"; 
+    });
+  </script>
+</body>
+</html>
