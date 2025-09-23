@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  
-  const fotografias = await fetch("./products.json").then(res => res.json());
-
+  let fotografias = [];
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   let total = carrito.reduce((acc, foto) => acc + foto.precio, 0);
 
@@ -17,15 +15,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   let indice = 0;
   let interval = null;
 
+  async function cargarProductos() {
+    try {
+      const response = await axios.get("./products.json");
+      fotografias = response.data; 
+      mostrarSlide(); 
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+    }
+  }
+
   function mostrarSlide() {
     const foto = fotografias[indice];
     slideImg.src = foto.imagen;
     slideImg.alt = foto.nombre;
     slideTitle.textContent = `${foto.nombre} - $${foto.precio}`;
   }
-
   function siguienteSlide() { indice = (indice + 1) % fotografias.length; mostrarSlide(); }
   function anteriorSlide() { indice = (indice - 1 + fotografias.length) % fotografias.length; mostrarSlide(); }
+
   function iniciarCarrusel() { interval = setInterval(siguienteSlide, 5000); }
   function detenerCarrusel() { clearInterval(interval); }
 
@@ -56,8 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).showToast();
   });
 
-  nextBtn.addEventListener("click", () => { detenerCarrusel(); siguienteSlide(); iniciarCarrusel(); });
-  prevBtn.addEventListener("click", () => { detenerCarrusel(); anteriorSlide(); iniciarCarrusel(); });
+  nextBtn.addEventListener("click", () => {
+    detenerCarrusel();
+    siguienteSlide();
+    iniciarCarrusel();
+  });
+  prevBtn.addEventListener("click", () => {
+    detenerCarrusel();
+    anteriorSlide();
+    iniciarCarrusel();
+  });
 
   document.getElementById("cerrar-carrito").addEventListener("click", () => carritoPanel.classList.remove("show"));
   document.getElementById("reiniciar").addEventListener("click", () => { carrito = []; total = 0; actualizarCarrito(); });
@@ -76,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).showToast();
   });
 
-  mostrarSlide();
+  await cargarProductos();
   actualizarCarrito();
   iniciarCarrusel();
 });
